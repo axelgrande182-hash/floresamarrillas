@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8e2a7">
+  <title>Para ti 💛</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #efe1c3;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      cursor: default;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #efe1c3;
+    }
+
+    /* La propuesta visual se conserva como una sola pieza, sin modificar su diseño. */
+    .artwork {
+      position: relative;
+      width: min(100vw, 1024px);
+      aspect-ratio: 1024 / 1536;
+      background: url("fondo-romantico.png") center top / 100% auto no-repeat;
+      isolation: isolate;
+    }
+
+    /* Área invisible sobre el botón amarillo "Eres mi todo". */
+    .love-link {
+      position: absolute;
+      left: 7.8%;
+      top: 20.75%;
+      width: 18.3%;
+      height: 3.15%;
+      z-index: 5;
+      display: block;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .love-link:focus-visible {
+      outline: 3px solid rgba(255, 184, 28, .95);
+      outline-offset: 4px;
+    }
+
+    /* Corazones flotantes decorativos, sin alterar la composición principal. */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -50px;
+      font-size: clamp(14px, 2vw, 28px);
+      opacity: 0;
+      animation: floatUp linear forwards;
+      filter: drop-shadow(0 0 8px rgba(240, 173, 0, .35));
+      color: #eab229;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(.75);
+        opacity: 0;
+      }
+      12% { opacity: .65; }
+      80% { opacity: .38; }
+      100% {
+        transform: translate3d(var(--drift), -110vh, 0)
+                   rotate(var(--rotation)) scale(1.15);
+        opacity: 0;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .page { padding: 20px; }
+      .artwork {
+        border-radius: 6px;
+        box-shadow: 0 25px 80px rgba(87, 54, 10, .18);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heart { animation: none !important; display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Carta romántica para ti">
+    <div class="artwork">
+      <a
+        class="love-link"
+        href="https://axelgrande182-hash.github.io/porbonita/"
+        aria-label="Eres mi todo"
+        title="Eres mi todo"
+      ></a>
+    </div>
+
+    <div class="hearts" id="hearts" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    const hearts = document.getElementById("hearts");
+    const symbols = ["♥", "♡", "❤"];
+
+    function createHeart(x = Math.random() * 100) {
+      const el = document.createElement("span");
+      el.className = "heart";
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      el.style.left = x + "vw";
+      el.style.setProperty("--drift", ((Math.random() - .5) * 180) + "px");
+      el.style.setProperty("--rotation", ((Math.random() - .5) * 50) + "deg");
+      el.style.animationDuration = (7 + Math.random() * 7) + "s";
+      el.style.animationDelay = (Math.random() * .7) + "s";
+      hearts.appendChild(el);
+      setTimeout(() => el.remove(), 15000);
+    }
+
+    for (let i = 0; i < 9; i++) {
+      setTimeout(() => createHeart(), i * 500);
+    }
+
+    setInterval(() => createHeart(), 1300);
+  </script>
+</body>
+</html>
